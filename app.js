@@ -1,24 +1,28 @@
 // Import the express module
 const express = require("express");
 
+const bodyParser = require("body-parser");
+
 // Create an instance of the express application
 const app = express();
 
-// Define a middleware function that will run for every request
-app.use("/", (req, res, next) => {
-  console.log("This always runs!");
-  next();
-});
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Define a middleware function that will run for requests to the "/add-product" path
 app.use("/add-product", (req, res, next) => {
-  console.log("In another middleware 1");
-  res.send('<h1>The "Add Product" Page</h1>');
+  // console.log("In another middleware 1");
+  res.send(
+    '<form action="/product" method="POST"><input type="text" name="title"><button type="submit">Add Product</from>'
+  );
+});
+app.use("/product", (req, res, next) => {
+  console.log(req.body);
+  res.redirect("/");
 });
 
 // Define another middleware function that will run for requests to the "/" path
 app.use("/", (req, res, next) => {
-  console.log("In another middleware 2");
+  // console.log("In another middleware 2");
   res.send("<h1>Hello from Express!</h1>");
 });
 
